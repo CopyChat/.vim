@@ -21,7 +21,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
 
 " Git plugin not hosted on GitHub
-Plugin 'git://git.wincent.com/command-t.git'
+"Plugin 'git://git.wincent.com/command-t.git'
 
 " add nerdtree
 Plugin 'scrooloose/nerdtree'
@@ -40,6 +40,8 @@ Plugin 'vim-scripts/mru.vim'
 Plugin 'vim-scripts/applescript.vim'
 Plugin 'vim-scripts/python.vim'
 Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -240,7 +242,7 @@ nmap qa :qa<cr>
 nmap q! :q!<cr>
 nmap <backspace> i<backspace><esc>l
 nmap <leader>p o<esc>0i#===================================================<space>
-nmap <leader>u o<esc>0i#---------------------------------------------------<space>
+"nmap <leader>- o<esc>0i#---------------------------------------------------<space>
 "=================================================== for the arrows
 "                只要是屏幕显示出的行，你都可以用它们在其中上下移动
 map <Up> gk
@@ -336,11 +338,11 @@ imap <leader>kr \cr<esc>
 """"""""""""""""""""""""""""""
 """"""""""""""""""""""""""""""
 " Enable ShowMarks
-"let showmarks_enable = 1
+let showmarks_enable = 0
 " Show which marks
 let showmarks_include = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 " Ignore help, quickfix, non-modifiable buffers
-let showmarks_ignore_type = "hqm"
+let showmarks_ignore_type = "hqmt"
 " Hilight lower & upper marks
 let showmarks_hlline_lower = 1
 let showmarks_hlline_upper = 1 
@@ -577,4 +579,39 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
-"#=================================================== tst;cc
+"#=================================================== 
+"How can I cause the QuickFix window to close after I select an item in it?
+autocmd FileType qf nnoremap <buffer> <CR> <CR>:cclose<CR>
+"=================================================== markdown
+let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_folding_style_pythonic = 1
+let g:vim_markdown_override_foldtext = 0
+
+"Set header folding level
+let g:vim_markdown_folding_level = 6
+
+"Disable Default Key Mappings
+let g:vim_markdown_no_default_key_mappings = 1
+
+"Enable TOC window auto-fit
+let g:vim_markdown_toc_autofit = 1
+
+"Text emphasis restriction to single-lines
+let g:vim_markdown_emphasis_multiline = 0
+
+"Syntax Concealing
+set conceallevel=2
+
+"To disable conceal regardless of conceallevel setting, add the following to your .vimrc:
+let g:vim_markdown_conceal = 0
+
+let g:vim_markdown_math = 1
+let g:vim_markdown_json_frontmatter = 1
+
+"Adjust new list item indent
+let g:vim_markdown_new_list_item_indent = 2
+
+
+"#=================================================== for MRU mru
+nmap <leader>uu :MRU<cr>
+
