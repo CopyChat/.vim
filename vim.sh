@@ -28,5 +28,4 @@ cd ~/
 
 curl -L https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim > .vim/autoload/pathogen.vim
 
-curl -L https://raw.github.com/gist/1147370/.vimrc > .vimrc   
-curl -L https://gist.githubusercontent.com/NickLaMuro/1147370/raw/f81dfbb05d16ee58a33cc7d08e63ab5556fc3e78/.vimrc_main > .vimrc_main
+curl -L https://github.com/CopyChat/.vim.git/vimrc.link > .vimrc
