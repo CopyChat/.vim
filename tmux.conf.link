@@ -602,6 +602,13 @@ run 'cut -c3- ~/.tmux.conf | sh -s _apply_configuration'
 #     fi
 #   fi
 #
+#   tmux_conf_new_window_prompt=${tmux_conf_new_window_prompt:-false}
+#   if _is_enabled "$tmux_conf_new_window_prompt"; then
+#     tmux bind C-c command-prompt -p new-window 'new-window -s "%%"'
+#   else
+#     tmux bind C-c new-window
+#   fi
+#
 #   tmux_conf_new_session_prompt=${tmux_conf_new_session_prompt:-false}
 #   if _is_enabled "$tmux_conf_new_session_prompt"; then
 #     tmux bind C-c command-prompt -p new-session 'new-session -s "%%"'

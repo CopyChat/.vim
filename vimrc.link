@@ -1,5 +1,6 @@
+"--------------------------------------------------- "
 "" ctang's vimrc
-"#--------------------------------------------------- "
+"--------------------------------------------------- "
 
 "==================================================  for Vundle vundle
 set nocompatible              " be iMproved, required
@@ -42,6 +43,9 @@ Plugin 'vim-scripts/python.vim'
 Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
+" for tmux
+Plugin 'jgdavey/tslime.vim'
+Plugin 'janko-m/vim-test'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -57,7 +61,7 @@ filetype plugin indent on    " required
 "
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
-"================================================== 
+"==================================================  end of Vundle
 "
 "
 "
@@ -68,13 +72,20 @@ filetype plugin indent on    " required
 "=================================================== basic setting
 let mapleader = ";"
 
-
 set encoding=utf-8 
 "set map as ;1 to show the encoding
 nmap <leader>1 :set<space>fileencoding<cr>
 
+
+"=================================================== set number
 syntax on
 set nu
+set relativenumber 
+highlight LineNr term=bold cterm=NONE ctermfg=darkgreen ctermbg=NONE gui=NONE guifg=Black guibg=#589A5D
+
+"to set a underline
+set cursorline
+
 set showmatch
 set tabstop=4
 set incsearch
@@ -90,9 +101,9 @@ filetype plugin on
 set hlsearch
 " highlighting more than 100 iterms
 highlight OverLength ctermbg=red ctermfg=white guibg=red guifg=white
-match OverLength '\%101v.*'
+match OverLength '\%100001v.*'
 
-set history=200
+set history=2000
 
 "=================================================== have statusbar always
 set laststatus=2
@@ -121,7 +132,7 @@ set statusline+=%b,0x%-8B\                   " current char
 set statusline+=%-14.(%l,%c%V%)\ %<%P        " offset
 
 " another
-set statusline=%t[%{strlen(&fenc)?&fenc:'none'},%{&ff}]%h%m%r%y%=%c,%l/%L\ %P
+"set statusline=%t[%{strlen(&fenc)?&fenc:'none'},%{&ff}]%h%m%r%y%=%c,%l/%L\ %P
 "=================================================== backup
 set swapfile
 set dir=~/.vim/tmp
@@ -237,8 +248,10 @@ nm tt o#include<time.h><esc>
 nm ti o#include<ifunction.h><esc>
 "==============================================================  for VIM
 set modifiable " for the buffer
+nmap <leader>b :buffers<cr>
 nmap mm :w<cr>
 nmap qa :qa<cr>
+nmap qq :q<cr>
 nmap q! :q!<cr>
 nmap <backspace> i<backspace><esc>l
 nmap <leader>p o<esc>0i#===================================================<space>
@@ -249,26 +262,11 @@ map <Up> gk
 map <Down> gj
 nmap <leader>r :reg<cr>
 "================================ map for c.vim
-nm z; \cfr 
-im z; \cfr 
-nm c; \rc  
-im c; \rc  
-"nm rr \rr
-nm ra \ra 
-nm fm \im 
 "=================================================== to run the current c or cpp code
 "=================================================== for c.vim
 autocmd FileType c,cpp map <buffer> <leader><space> :w<cr>:make<cr>
-nmap cn :cn<cr><cr><cr>
-nmap cp :cp<cr><cr><cr>
-"nmap <leader>cp :cp<cr>
-nmap <leader>cw :cw 10<cr>
-nmap c<space> :cclose<cr><cr>  " to close the buffer window
-nmap <leader><space> :copen
-nmap de !!date<cr> 
 "nmap ;p o<esc>0i//====================================================<esc>d$o<esc>xxi<tab>
 "
-
 "#=================================================== for Powerline
 
 let g:Powerline_symbols = 'fancy'
@@ -307,33 +305,7 @@ let NERDTreeShowHidden=1
 let NERDTreeShowLineNumbers=1
 let NERDTreeWinPos='left'
 let NERDTreeWinSize=21
-"================================================ map for bash-support.vim note
-im <leader>ch \cfdh 
-nm <leader>ch <leader>cfdh 
-imap <leader>kf \cfu
-nmap <leader>kf \cfu
-imap <leader>kc \ckc
-nmap <leader>kc \ckc
-
-"=================================================== command line
-nmap <leader>go \su
-
-imap <leader>kh \ch
-nmap <leader>kh \ch
-imap <leader>kt \ckt
-nmap <leader>kt \ckt
-imap <leader>kw \ckw
-nmap <leader>kw \ckw
-imap <leader>kb \ckb
-nmap <leader>kb \ckb
-imap <leader>kn \ckn
-nmap <leader>kn \ckn
-"========================================== echo this line
-"nmap <leader>ke ^iecho<space>"<esc>A"<esc>0j   
-nmap <leader>kr \cr<esc>
-imap <leader>ke \ce<esc>
-nmap <leader>ke \ce<esc>
-imap <leader>kr \cr<esc>
+"================================================ map for bash-support.vim 
 "========================================== showmarks setting
 """"""""""""""""""""""""""""""
 """"""""""""""""""""""""""""""
@@ -358,7 +330,7 @@ nmap mt <leader>mt
 nmap mh <leader>mh
 nmap mn <leader>mm
 
-" ============================================== for windows
+" ============================================== for switch panes
 nmap ;w <C-w><C-w>
 " ============================================== path
 set path="/usr/include/"
@@ -384,37 +356,37 @@ let MRU_Max_Submenu_Entries = 15
 
 "=================================================== for pathogen.vim
 call pathogen#infect()
-"=================================================== ctrlp
-let g:ctrlp_map = '<c-p>'
 "=========================================================== for yankring
 let g:yankring_enabled = 1
 let g:yankring_history_dir='/Users/ctang/.vim/'
-nmap <leader>r :YRShow<cr>
+nmap <leader>k :YRShow<cr>
 let g:yankring_window_use_horiz = 1  " Use vertical split
 let g:yankring_window_width = 30
 let g:yankring_window_increment = 50
 
-"============================================================= statusline
 "=================================================== press rr to run current *.scpt
-au BufRead *.scpt map <buffer> rr :w<CR>:!tmux send-keys -t right 'osascript %:p' C-m &  <CR>
+"au BufRead *.scpt map <buffer> <leader>rr :w<CR>:!tmux send-keys -t right 'osascript %:p' C-m &  <CR>
+au BufRead *.scpt map <buffer> <leader>rr :w\|:call Send_to_Tmux("osascript ".expand("%")."\n") <CR>
 
 "==============================================================================
 "USAGE                                                      *for Bash Shell*
-au BufRead *.sh map <buffer> rr :w<CR>:!tmux send-keys -t right 'bash %:p' C-m &  <CR>
-au BufRead *.sh map <buffer> ra :w<CR>:!tmux send-keys -t right 'bash %:p $(eval echo )' C-m & 
+"au BufRead *.sh map <buffer> <leader>rr :w<CR>:!tmux send-keys -t right 'bash %:p' C-m <CR>
+"au BufRead *.sh map <buffer> <leader>ra :w<CR>:!tmux send-keys -t right 'bash %:p $(eval echo )' C-m & 
+au BufRead *.sh map <buffer> <leader>rt :w<CR>:!bash %:p <CR>
+au BufRead *.sh map <buffer> <leader>rr :w\|:call Send_to_Tmux("bash ".expand("%")."\n") <CR>
 
 "==============================================================================
 "USAGE                                                      *for MATLAB*
-autocmd BufRead *.m map <buffer> rr :w<CR>:!NAME=%; matlab -nodesktop -nosplash -r ${NAME\%.m} <CR>
+autocmd BufRead *.m map <buffer> <leader>rr :w<CR>:!NAME=%; matlab -nodesktop -nosplash -r ${NAME\%.m} <CR>
 
 autocmd FileType m nmap <leader>p o<esc>0i%===================================================<space>
 nmap <leader>uu o<esc>0i#---------------------------------------------------<space>
 "==============================================================================
 "USAGE                                                      *for ncl*
-autocmd BufRead *.ncl map <buffer> rr :w<CR>:!/usr/bin/env ncl % <CR>
+autocmd BufRead *.ncl map <buffer> <leader>rr :w<CR>:!ncl % <CR>
 "==============================================================================
 "USAGE                                                      *for ncl*
-autocmd BufRead *.gs map <buffer> rr :w<CR>:!/usr/bin/env grads -lbc "run %" <CR>
+autocmd BufRead *.gs map <buffer> <leader>rr :w<CR>:!grads -lbc "run %" <CR>
 "grads -lbc "run stdmap.temp.gs"
 nmap <leader>99 :!cat % <CR>
 set smarttab
@@ -522,15 +494,16 @@ function! PythonCmdLineArguments ()
     else
         let	b:PythonCmdLineArgs= Python_Input( prompt , "" )
     endif
-    "return b:PythonCmdLineArgs
-    "echo b:PythonCmdLineArgs
-    "let b:tssdf='jjjjjjjjjjjj'
-    "echo b:tssdf
-    "prompt = b:tssdf
 endfunction    " ----------  end of function PythonCmdLineArguments ----------
 
-autocmd BufRead *.py map <buffer> ra :!python % $(eval echo 
-au BufRead *.py map <buffer> rr :w<CR>:!tmux send-keys -t right '/usr/bin/env python %:p' C-m &  <CR>
+"#=================================================== for python 
+autocmd BufRead *.py map <buffer> <leader>ra :!python % $(eval echo 
+"au BufRead *.py map <buffer> <leader>rr :w<CR>:!tmux send-keys -t right 'python %:p' Enter <CR>
+"au BufRead *.py map rr :w<Bar>execute '!tmux send-keys -t right C-r'<Bar>python %:p!<C-M>
+
+au BufRead *.py map <buffer> <leader>rt :w<CR>:!python %:p <CR>
+au BufRead *.py map <buffer> <leader>rr :w\|:call Send_to_Tmux("python ".expand("%")."\n") <CR>
+
 "autocmd BufRead *.py map <buffer> ra :call PythonCmdLineArguments()<CR>
 "au BufRead *.py map <buffer> rr :w<CR>:echo b:PythonCmdLineArgs<CR> 
 "au BufRead *.py map <buffer> rr :w<CR>:!/usr/bin/env python % $(:echo b:PythonCmdLineArgs)<CR>
@@ -539,11 +512,7 @@ au BufRead *.py map <buffer> rr :w<CR>:!tmux send-keys -t right '/usr/bin/env py
 "exe "imenu <silent> ".s:BASH_Root.'&Run.Bash\ cmd\.\ line\ &arg\.<Tab>\\rba                  <C-C>:call BASH_BashCmdLineArguments()<CR>'
 "
 
-
-"to set a underline
-set cursorline
-
-
+"#=================================================== highlight 
 
 "It is possible to highlight the entire line permanently (mapped to key \l):
 nnoremap <silent> <Leader>l :exe "let m = matchadd('WildMenu','\\%" . line('.') . "l')"<CR>
@@ -552,13 +521,13 @@ nnoremap <silent> <Leader>l :exe "let m = matchadd('WildMenu','\\%" . line('.') 
 nnoremap <silent> <Leader>h :exe "let m=matchadd('WildMenu','\\<\\w*\\%" . line(".") . "l\\%" . col(".") . "c\\w*\\>')"<CR>
 
 "To highlight the words contained in the virtual column (mapped to \c):
-nnoremap <silent> <Leader>c :exe "let m=matchadd('WildMenu','\\<\\w*\\%" . virtcol(".") . "v\\w*\\>')"<CR>
+nnoremap <silent> <Leader>cc :exe "let m=matchadd('WildMenu','\\<\\w*\\%" . virtcol(".") . "v\\w*\\>')"<CR>
 
 "And finally, one can clear the permanent highlights (mapped to \Enter):
 nnoremap <silent> <Leader><CR> :call clearmatches()<CR>
+
 "=================================================== for gnuplot v5 in /usr/local/bin/gnuplot
 au BufRead *.gps map <buffer> rr :w<CR>:!tmux send-keys -t right '/usr/local/bin/gnuplot %:p' C-m &  <CR>
-
 
 "=================================================== to print with line number
 set printoptions=number:y
@@ -566,8 +535,14 @@ set printoptions=number:y
 "=================================================== for R 
 au BufRead *.r map <buffer> rr :w<CR>:!tmux send-keys -t right 'Rscript %:p' C-m &  <CR>
 
-"#=================================================== for CtrlP
-nmap <leader>e :CtrlP<CR>
+"#=================================================== for CtrlP ctrlp
+nmap <leader>uu :CtrlPMixed<CR>
+nmap <leader>ub ::CtrlPBuffer<CR>
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_map = '<c-p>'
+"https://kien.github.io/ctrlp.vim/
+let g:ctrlp_mruf_case_sensitive = 1
+
 
 "#=================================================== for syntastic
 set statusline+=%#warningmsg#
@@ -611,7 +586,21 @@ let g:vim_markdown_json_frontmatter = 1
 "Adjust new list item indent
 let g:vim_markdown_new_list_item_indent = 2
 
-
 "#=================================================== for MRU mru
-nmap <leader>uu :MRU<cr>
+nmap <leader>ue :MRU<cr>
+"#=================================================== 
+au BufRead,BufNewFile *.md setlocal textwidth=80
 
+"#=================================================== text wrap
+set wrap
+set lbr
+
+"#=================================================== for lstime
+let g:tslime_always_current_session = 1 
+let g:tslime_always_current_window = 1
+"#=================================================== for janko-m/vim-test
+nmap <silent> <leader>t :TestNearest<CR>
+" make test commands execute using dispatch.vim
+let test#strategy = "tslime"
+let test#file_pattern = '.py' 
+let test#python#runner = 'pytest'

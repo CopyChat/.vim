@@ -91,6 +91,7 @@ alias cdi="cd /Users/ctang/Library/Mobile\ Documents/com~apple~CloudDocs"
 #alias cdrrtmg="cd /Users/ctang/climate/Modeling/rrtmg_sw_v3.9/column_model"
 alias cdm="cd /Users/ctang/climate/Modeling"
 alias cdp="cd /Users/ctang/Code/Python"
+alias cdw="cd /Users/ctang/climate/GLOBALDATA/OBSDATA/WRDC"
 
 alias cda="cd /Users/ctang/Code/Apple"
 alias cds="cd /Users/ctang/Code/Shell"
@@ -100,6 +101,7 @@ alias cddg="cd /Users/ctang/climate/GLOBALDATA"
 alias cddn="cd /Users/ctang/climate/GLOBALDATA/OBSDATA/GEBAdata/validation.cm_saf"
 alias cdr="cd /Users/ctang/climate/RegCM/RegCM-4.5.0"
 alias cdd="cd /Users/ctang/Code/CORDEX_AFR_studies/"
+alias cdc="cd /Users/ctang/climate/GLOBALDATA/OBSDATA/CM_SAF/validation.CM_SAF.SA"
 
 #alias gcc="gcc -std=c99"
 #alias topcat="topcat -Xmx4256M"
@@ -478,9 +480,8 @@ export LD_LIBRARY_PATH=$MPI/lib:$LD_LIBRARY_PATH
 export HDFLOOKTMP=/Users/ctang/.HDFLOOKTMP
 PATH=/Applications/HDFLook:$PATH;export PATH
 
-
 #=================================================== Basemap in Python
 export GEOS_DIR=/Library/Frameworks/GEOS.framework/Versions/Current/unix
 #=================================================== 
-alias tm='tmux new bash'
+alias tm='tmux -vvvv new bash'
 alias vt.='vim ~/.tmux.conf.local'

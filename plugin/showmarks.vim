@@ -139,7 +139,7 @@ if g:showmarks_enable == 1
 endif
 
 " Highlighting: Setup some nice colours to show the mark positions.
-hi default ShowMarksHLl ctermfg=darkblue ctermbg=yellow  cterm=bold guifg=blue guibg=lightblue gui=bold
+hi default ShowMarksHLl ctermfg=black ctermbg=lightblue  cterm=bold guifg=black guibg=lightblue gui=bold
 hi default ShowMarksHLu ctermfg=darkblue ctermbg=red  cterm=bold guifg=blue guibg=lightblue gui=bold
 hi default ShowMarksHLo ctermfg=darkblue ctermbg=blue cterm=bold guifg=blue guibg=lightblue gui=bold
 hi default ShowMarksHLm ctermfg=darkblue ctermbg=green cterm=bold guifg=blue guibg=lightblue gui=bold
