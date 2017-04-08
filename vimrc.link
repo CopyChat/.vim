@@ -1,4 +1,5 @@
 "--------------------------------------------------- "
+"
 "" ctang's vimrc
 "--------------------------------------------------- "
 
@@ -45,7 +46,7 @@ Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 " for tmux
 Plugin 'jgdavey/tslime.vim'
-Plugin 'janko-m/vim-test'
+"Plugin 'janko-m/vim-test'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -83,6 +84,7 @@ set nu
 set relativenumber 
 highlight LineNr term=bold cterm=NONE ctermfg=darkgreen ctermbg=NONE gui=NONE guifg=Black guibg=#589A5D
 
+set clipboard=unnamed
 "to set a underline
 set cursorline
 
@@ -105,31 +107,31 @@ match OverLength '\%100001v.*'
 
 set history=2000
 
-"=================================================== have statusbar always
+""=================================================== have statusbar always
 set laststatus=2
 " spiiph's
-set statusline=
-set statusline+=%<\                       " cut at start
-set statusline+=%2*[%n%H%M%R%W]%*\        " flags and buf no
-set statusline+=%-40f\                    " path
-set statusline+=%=%1*%y%*%*\              " file type
-set statusline+=%10((%l,%c)%)\            " line and column
-set statusline+=%P                        " percentage of file
+"set statusline=
+"set statusline+=%<\                       " cut at start
+"set statusline+=%2*[%n%H%M%R%W]%*\        " flags and buf no
+"set statusline+=%-40f\                    " path
+"set statusline+=%=%1*%y%*%*\              " file type
+"set statusline+=%10((%l,%c)%)\            " line and column
+"set statusline+=%P                        " percentage of file
 
 " jamessan's
-set statusline=   " clear the statusline for when vimrc is
+"set statusline=   " clear the statusline for when vimrc is
 "reloaded
-set statusline+=%-3.3n\                      " buffer number
-set statusline+=%f\                          " file name
-set statusline+=%h%m%r%w                     " flags
-set statusline+=[%{strlen(&ft)?&ft:'none'},  " filetype
-set statusline+=%{strlen(&fenc)?&fenc:&enc}, " encoding
-set statusline+=%{&fileformat}]              " file format
-set statusline+=%=                           " right align
-set statusline+=%{synIDattr(synID(line('.'),col('.'),1),'name')}\
-" highlight
-set statusline+=%b,0x%-8B\                   " current char
-set statusline+=%-14.(%l,%c%V%)\ %<%P        " offset
+"set statusline+=%-3.3n\                      " buffer number
+"set statusline+=%f\                          " file name
+"set statusline+=%h%m%r%w                     " flags
+"set statusline+=[%{strlen(&ft)?&ft:'none'},  " filetype
+"set statusline+=%{strlen(&fenc)?&fenc:&enc}, " encoding
+"set statusline+=%{&fileformat}]              " file format
+"set statusline+=%=                           " right align
+"set statusline+=%{synIDattr(synID(line('.'),col('.'),1),'name')}\
+"" highlight
+"set statusline+=%b,0x%-8B\                   " current char
+"set statusline+=%-14.(%l,%c%V%)\ %<%P        " offset
 
 " another
 "set statusline=%t[%{strlen(&fenc)?&fenc:'none'},%{&ff}]%h%m%r%y%=%c,%l/%L\ %P
@@ -153,21 +155,52 @@ nnoremap <space> za
 "============================= for tags and Tlist
 set tags=/Users/ctang/.vim/tags
 let Tlist_Show_One_File=1
-let Tlist_Exit_OnlyWindow=1
 let Tlist_Auto_Open=0
 let Tlist_Use_SingleClick=1
 " 这项必须设定，否则出错,配置taglist的ctags路径
 " 不同时显示多个文件的 tag ，只显示当前文件的
-" 如果 taglist 窗口是最后一个窗口，则退出 vim
 " "让当前不被编辑的文件的方法列表自动折叠起来 
 "let Tlist_File_Fold_Auto_Close=1
-"     "把taglist窗口放在屏幕的右侧，缺省在左侧 
-let Tlist_Use_Right_Window=1 
-"      "显示taglist菜单
-let Tlist_Show_Menu=1
-"       "启动vim自动打开taglist
-"  let Tlist_Auto_Open=1 
 
+" function to show nerdtree and TagList together
+function! ToggleNerdtreeTaglist()
+    " check if NERDTree and Taglist are opened
+    let NERDTree_close = (bufwinnr('NERD_tree') == -1) 
+    let TagList_close   = (bufwinnr('__Tag_List__') == -1) 
+    
+    TlistToggle
+    NERDTreeToggle
+
+    if NERDTree_close && TagList_close
+        wincmd K
+        wincmd b
+        wincmd L
+        wincmd h
+        exe 'vertical resize 30'
+    endif
+       
+endfunction 
+nmap <C-e> :call ToggleNerdtreeTaglist() <CR>
+"=======================================
+"                                                           taglist
+let Tlist_Use_LEFT_Window=0 "default
+let Tlist_GainFocus_On_ToggleOpen=1
+"let g:winManagerWindowLayout=’FileExplorer'
+nmap <leader>tl :Tlist<cr>
+let Tlist_Ctags_Cmd = '/usr/local/bin/ctags'
+let Tlist_WinHeight=10
+let Tlist_WinWidth=40
+let Tlist_Use_Singleclick=1
+let Tlist_Use_Right_Window=1
+let Tlist_Show_Menu=1
+"let Tlist_Max_Submenu_Iterms=20
+"let Tlist_Max_Tag_Length=10
+let g:SuperTabRetainCompletionType = 1
+let g:SuperTabDefaultCompletionType = "<C-N><C-P>" 
+set autowrite
+set showmode
+set smarttab
+set title
 set cscopequickfix=s-,c-,d-,i-,t-,e-
 cs add /Users/ctang/.vim/cscope.out  /Users/ctang/.vim/ 
 "=================================================set for colorschrme
@@ -180,34 +213,6 @@ endif
 "colorscheme desertEx
 let g:solarized_menu=1
 "colorscheme solarized
-"=======================================
-"                                                           taglist
-let Tlist_Use_LEFT_Window=1 "default
-let Tlist_File_Fold_Auto_Close=1
-let Tlist_Show_One_File=1
-let Tlist_GainFocus_On_ToggleOpen=1
-let Tlist_Exit_OnlyWindow=1
-"let g:winManagerWindowLayout=’FileExplorer’
-nmap tl :Tlist<cr>
-let Tlist_Ctags_Cmd = '/usr/local/bin/ctags'
-let Tlist_WinHeight=100
-let Tlist_WinWidth=30
-let Tlist_Use_Singleclick=1
-let Tlist_Use_Right_Window=0
-let Tlist_Show_Menu=1
-"let Tlist_Max_Submenu_Iterms=20
-"let Tlist_Max_Tag_Length=10
-inoremap <C-]>             <C-X><C-]>
-inoremap <C-F>             <C-X><C-F>
-inoremap <C-D>             <C-X><C-D>
-inoremap <C-L>             <C-X><C-L>
-inoremap <C-P>             <C-N><C-P>
-let g:SuperTabRetainCompletionType = 2
-let g:SuperTabDefaultCompletionType = "<C-N><C-P>" 
-set autowrite
-set showmode
-set smarttab
-set title
 "=================================================
 set mouse=a
 "set mouse=na
@@ -379,7 +384,7 @@ au BufRead *.sh map <buffer> <leader>rr :w\|:call Send_to_Tmux("bash ".expand("%
 "USAGE                                                      *for MATLAB*
 autocmd BufRead *.m map <buffer> <leader>rr :w<CR>:!NAME=%; matlab -nodesktop -nosplash -r ${NAME\%.m} <CR>
 
-autocmd FileType m nmap <leader>p o<esc>0i%===================================================<space>
+nmap <leader>p o<esc>0i#===================================================<space>
 nmap <leader>uu o<esc>0i#---------------------------------------------------<space>
 "==============================================================================
 "USAGE                                                      *for ncl*
@@ -502,7 +507,13 @@ autocmd BufRead *.py map <buffer> <leader>ra :!python % $(eval echo
 "au BufRead *.py map rr :w<Bar>execute '!tmux send-keys -t right C-r'<Bar>python %:p!<C-M>
 
 au BufRead *.py map <buffer> <leader>rt :w<CR>:!python %:p <CR>
-au BufRead *.py map <buffer> <leader>rr :w\|:call Send_to_Tmux("python ".expand("%")."\n") <CR>
+"au BufRead *.py map <buffer> <leader>rr :w\|:call Send_to_Tmux("python ".expand("%")."\n") <CR>
+" chose pane 2 first, then run the code, depends on the map: <leader>ts
+au BufRead *.py map <buffer> <leader>rr <leader>ts2<CR>:w\|:call Send_to_Tmux("python ".expand("%")."\n") <CR>
+" chose pane 3 first, then set_trice, and run the code, depends on the map: <leader>ts.
+" when insert set trice,jedi make it slow, use 'replace' to do it.
+au BufRead *.py map <leader>ss <leader>ts3<CR>opdb_set_trace()<esc>V:s/b_s/b.s/g<CR>:w\|:call Send_to_Tmux("python ".expand("%")."\n") <CR>
+
 
 "autocmd BufRead *.py map <buffer> ra :call PythonCmdLineArguments()<CR>
 "au BufRead *.py map <buffer> rr :w<CR>:echo b:PythonCmdLineArgs<CR> 
@@ -545,9 +556,9 @@ let g:ctrlp_mruf_case_sensitive = 1
 
 
 "#=================================================== for syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
@@ -598,9 +609,10 @@ set lbr
 "#=================================================== for lstime
 let g:tslime_always_current_session = 1 
 let g:tslime_always_current_window = 1
+nmap <leader>ts <Plug>SetTmuxVars
 "#=================================================== for janko-m/vim-test
-nmap <silent> <leader>t :TestNearest<CR>
-" make test commands execute using dispatch.vim
-let test#strategy = "tslime"
-let test#file_pattern = '.py' 
-let test#python#runner = 'pytest'
+"nmap <silent> <leader>t :TestNearest<CR>
+"" make test commands execute using dispatch.vim
+"let test#strategy = "tslime"
+"let test#file_pattern = '.py' 
+"let test#python#runner = 'pytest'

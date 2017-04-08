@@ -483,5 +483,5 @@ PATH=/Applications/HDFLook:$PATH;export PATH
 #=================================================== Basemap in Python
 export GEOS_DIR=/Library/Frameworks/GEOS.framework/Versions/Current/unix
 #=================================================== 
-alias tm='tmux -vvvv new bash'
+alias tm='tmux new bash'
 alias vt.='vim ~/.tmux.conf.local'
