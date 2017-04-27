@@ -90,7 +90,9 @@ alias cdi="cd /Users/ctang/Library/Mobile\ Documents/com~apple~CloudDocs"
 #alias enso="cd /Users/ctang/climate/Modeling/Ensemble/ENSO"
 #alias cdrrtmg="cd /Users/ctang/climate/Modeling/rrtmg_sw_v3.9/column_model"
 alias cdm="cd /Users/ctang/climate/Modeling"
+alias cde='cd /Users/ctang/climate/GLOBALDATA/OBSDATA/ERA_Interim/ERA_Interim_SSR_vs_GEBA'
 alias cdp="cd /Users/ctang/Code/Python"
+alias vp.="vim /Users/ctang/Code/Python/ctang.py"
 alias cdw="cd /Users/ctang/climate/GLOBALDATA/OBSDATA/WRDC"
 
 alias cda="cd /Users/ctang/Code/Apple"

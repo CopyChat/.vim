@@ -153,7 +153,12 @@ set foldlevel=99
 nnoremap <space> za
 "==================================================================
 "============================= for tags and Tlist
-set tags=/Users/ctang/.vim/tags
+let s:tlist_def_cpp_settings = 'c++;n:namespace;v:variable;d:macro;t:typedef;' . 
+                              \ 'c:class;g:enum;s:struct;u:union;f:function;m:member;' .
+                                 \ 'p:prototype'
+"set tags=/Users/ctang/.vim/tags
+"set tags=tags
+"set autochdir
 let Tlist_Show_One_File=1
 let Tlist_Auto_Open=0
 let Tlist_Use_SingleClick=1
@@ -187,7 +192,7 @@ let Tlist_Use_LEFT_Window=0 "default
 let Tlist_GainFocus_On_ToggleOpen=1
 "let g:winManagerWindowLayout=’FileExplorer'
 nmap <leader>tl :Tlist<cr>
-let Tlist_Ctags_Cmd = '/usr/local/bin/ctags'
+let Tlist_Ctags_Cmd='/usr/local/bin/ctags'
 let Tlist_WinHeight=10
 let Tlist_WinWidth=40
 let Tlist_Use_Singleclick=1
@@ -370,15 +375,21 @@ let g:yankring_window_width = 30
 let g:yankring_window_increment = 50
 
 "=================================================== press rr to run current *.scpt
-"au BufRead *.scpt map <buffer> <leader>rr :w<CR>:!tmux send-keys -t right 'osascript %:p' C-m &  <CR>
-au BufRead *.scpt map <buffer> <leader>rr :w\|:call Send_to_Tmux("osascript ".expand("%")."\n") <CR>
+au BufRead *.scpt map <buffer> <leader>rt :w<CR>:!osascript %:p <CR>
+"au BufRead *.scpt map <buffer> <leader>rr :w\|:call Send_to_Tmux("osascript ".expand("%")."\n") <CR>
+" chose pane 2 first, then run the code, depends on the map: <leader>ts
+au BufRead *.scpt map <buffer> <leader>rr <leader>ts2<CR>:w\|:call Send_to_Tmux("osascript ".expand("%")."\n") <CR>
+" chose pane 3 first, then set_trice, and run the code, depends on the map: <leader>ts.
+" when insert set trice,jedi make it slow, use 'replace' to do it.
+au BufRead *.scpt map <leader>ss <leader>ts3<CR>opdb_set_trace()<esc>V:s/b_s/b.s/g<CR>:w\|:call Send_to_Tmux("osascript ".expand("%")."\n") <CR>
 
 "==============================================================================
 "USAGE                                                      *for Bash Shell*
 "au BufRead *.sh map <buffer> <leader>rr :w<CR>:!tmux send-keys -t right 'bash %:p' C-m <CR>
 "au BufRead *.sh map <buffer> <leader>ra :w<CR>:!tmux send-keys -t right 'bash %:p $(eval echo )' C-m & 
 au BufRead *.sh map <buffer> <leader>rt :w<CR>:!bash %:p <CR>
-au BufRead *.sh map <buffer> <leader>rr :w\|:call Send_to_Tmux("bash ".expand("%")."\n") <CR>
+au BufRead *.sh map <buffer> <leader>rr <leader>ts2<CR>:w\|:call Send_to_Tmux("bash ".expand("%")."\n") <CR>
+au BufRead *.sh map <leader>ss <leader>ts3<CR>:w\|:call Send_to_Tmux("bash ".expand("%")."\n") <CR>
 
 "==============================================================================
 "USAGE                                                      *for MATLAB*
@@ -547,8 +558,8 @@ set printoptions=number:y
 au BufRead *.r map <buffer> rr :w<CR>:!tmux send-keys -t right 'Rscript %:p' C-m &  <CR>
 
 "#=================================================== for CtrlP ctrlp
-nmap <leader>uu :CtrlPMixed<CR>
-nmap <leader>ub ::CtrlPBuffer<CR>
+nmap <leader>ub :CtrlPMixed<CR>
+nmap <leader>uu ::CtrlPBuffer<CR>
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_map = '<c-p>'
 "https://kien.github.io/ctrlp.vim/
